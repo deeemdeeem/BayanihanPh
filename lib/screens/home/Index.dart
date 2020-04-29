@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:helpinghand/providers/Venues.dart';
+import 'package:helpinghand/screens/center/CreateVenue.dart';
 import 'package:helpinghand/widgets/DashboardWidget.dart';
 import 'package:helpinghand/widgets/DonationVenueList.dart';
 import 'package:provider/provider.dart';
+import 'package:helpinghand/services/auth.dart';
 
 class HomeIndex extends StatefulWidget {
   @override
@@ -10,6 +12,7 @@ class HomeIndex extends StatefulWidget {
 }
 
 class _HomeIndexState extends State<HomeIndex> {
+  final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
@@ -31,7 +34,8 @@ class _HomeIndexState extends State<HomeIndex> {
                         color: Colors.white,
                       )),
                   onTap: () {
-                    Navigator.popAndPushNamed(context, '/createvenue');
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => CreateVenue()));
                   },
                 ),
               ),
@@ -58,7 +62,9 @@ class _HomeIndexState extends State<HomeIndex> {
                         ),
                         FlatButton(
                           child: Text('Logout'),
-                          onPressed: () {},
+                          onPressed: () async {
+                            await _auth.googleSignOut();
+                          },
                         )
                       ],
                     ),
