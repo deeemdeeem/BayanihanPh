@@ -13,25 +13,15 @@ class AuthService {
   // create user obj based on Firebase User
 
   User _userFromFirebaseUser(FirebaseUser user) {
-    return user != null ? User(uid: user.uid, displayName:user.displayName) : null;
+    return user != null
+        ? User(uid: user.uid, displayName: user.displayName)
+        : null;
   }
 
   // auth change user stream
 
   Stream<User> get user {
     return _auth.onAuthStateChanged.map(_userFromFirebaseUser);
-  }
-
-  // sign in anonymously
-  Future signInAnon() async {
-    try {
-      AuthResult result = await _auth.signInAnonymously();
-      FirebaseUser user = result.user;
-      return _userFromFirebaseUser(user);
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
   }
 
   // sign in with Gmail
@@ -55,7 +45,7 @@ class AuthService {
       return _userFromFirebaseUser(_user);
       // return _user;
     } catch (e) {
-      print("ERROR DAW "+e.toString());
+      print("ERROR DAW " + e.toString());
       return null;
     }
   }
@@ -73,7 +63,20 @@ class AuthService {
     }
   }
 
+// sign in anonymously
+  // we did not use this function. Just for testing
+  Future signInAnon() async {
+    try {
+      AuthResult result = await _auth.signInAnonymously();
+      FirebaseUser user = result.user;
+      return _userFromFirebaseUser(user);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
   // register email and password
+  // we did not use this function. Just for testing
 
   Future registerWithEmailAndPassword(String email, String password) async {
     try {
@@ -88,6 +91,7 @@ class AuthService {
   }
 
   // sign out
+  // we did not use this function. Just for testing
   Future signOut() async {
     try {
       return await _auth.signOut();
