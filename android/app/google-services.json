@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "863089584460",
+    "firebase_url": "https://solutionchallenge-52ee8.firebaseio.com",
+    "project_id": "solutionchallenge-52ee8",
+    "storage_bucket": "solutionchallenge-52ee8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:863089584460:android:6f84da3e00786e2b2387e9",
+        "android_client_info": {
+          "package_name": "com.example.helpinghand"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "863089584460-uicoq69rlo07piv2ekonhvrnqn2kj65u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1e7aiGPy7G7S7jABilgT06vI6aP-ytoE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "863089584460-uicoq69rlo07piv2ekonhvrnqn2kj65u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
