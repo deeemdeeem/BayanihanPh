@@ -4,13 +4,13 @@ class Dashboard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(20),
-      child: Card(
-        child: Container(
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[Text('Dashboard Card'), Container()],
-          ),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.grey[100],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[Text('Dashboard Card'), Container()],
         ),
       ),
     );

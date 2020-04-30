@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:helpinghand/constants/constants.dart';
 import 'package:helpinghand/providers/Venues.dart';
 import 'package:helpinghand/screens/center/CreateVenue.dart';
 import 'package:helpinghand/widgets/DashboardWidget.dart';
@@ -19,79 +21,103 @@ class _HomeIndexState extends State<HomeIndex> {
       create: (context) => VenuesProvider(),
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Home'),
-          actions: <Widget>[
-            ClipOval(
-              child: Material(
-                color: Colors.blue, // button color
-                child: InkWell(
-                  splashColor: Colors.blueGrey, // inkwell color
-                  child: SizedBox(
-                      width: 56,
-                      height: 56,
-                      child: Icon(
-                        Icons.create,
-                        color: Colors.white,
-                      )),
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => CreateVenue()));
-                  },
-                ),
-              ),
+          title: Text(
+            'Home',
+            style: TextStyle(
+              fontFamily: mBold,
+              fontSize: 25,
             ),
-          ],
+          ),
+          centerTitle: true,
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CreateVenue(),
+            ),
+          ),
+          icon: Icon(
+            FontAwesomeIcons.plusCircle,
+          ),
+          label: Text(
+            'Create Venue',
+            style: TextStyle(
+              fontFamily: mSemiBold,
+            ),
+          ),
         ),
         drawer: Drawer(
           child: SafeArea(
-            child: ListView(
+            child: Column(
               // Important: Remove any padding from the ListView.
-              padding: EdgeInsets.zero,
               children: <Widget>[
                 DrawerHeader(
-                  child: Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      mainAxisSize: MainAxisSize.max,
-                      children: <Widget>[
-                        CircleAvatar(
-                          radius: 60,
-                          // child: Container(child: ,),
-                          backgroundImage: NetworkImage(
-                              'https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80'),
-                        ),
-                        FlatButton(
-                          child: Text('Logout'),
-                          onPressed: () async {
-                            await _auth.googleSignOut();
-                          },
-                        )
-                      ],
-                    ),
-                  ),
                   decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          'https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80'),
+                      fit: BoxFit.cover,
+                    ),
                     color: Colors.blue,
                   ),
+                  child: null,
                 ),
                 ListTile(
                   dense: false,
-                  trailing: Text('Home'),
-                  subtitle: Text('Home'),
-                  title: Text('Home'),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                  ),
+                  leading: Icon(Icons.home),
+                  title: Text(
+                    'Home',
+                    style: TextStyle(
+                      fontFamily: mSemiBold,
+                    ),
+                  ),
                   onTap: () {
                     // Update the state of the app.
                     // ...
                   },
                 ),
                 ListTile(
-                  title: Text('Donations'),
+                  title: Text(
+                    'Donations',
+                    style: TextStyle(
+                      fontFamily: mSemiBold,
+                    ),
+                  ),
                   dense: false,
-                  trailing: Text('Home'),
-                  subtitle: Text('Home'),
+                  leading: Icon(
+                    FontAwesomeIcons.donate,
+                  ),
+                  trailing: Icon(Icons.arrow_forward_ios),
                   onTap: () {
                     // Update the state of the app.
                     // ...
                   },
+                ),
+                Expanded(child: SizedBox()),
+                Card(
+                  color: Colors.redAccent,
+                  margin: EdgeInsets.all(0),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.zero,
+                  ),
+                  child: ListTile(
+                    leading: Icon(
+                      FontAwesomeIcons.signOutAlt,
+                      color: Colors.white,
+                    ),
+                    title: Text(
+                      'Sign out',
+                      style: TextStyle(
+                        fontFamily: mBold,
+                        color: Colors.white,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -104,7 +130,7 @@ class _HomeIndexState extends State<HomeIndex> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Dashboard(),
+                Expanded(flex: 1, child: Dashboard()),
                 // RaisedButton(
                 //   child: Icon(
                 //     Icons.navigate_next,
@@ -120,9 +146,12 @@ class _HomeIndexState extends State<HomeIndex> {
                 //   child: Text('Home'),
                 // ),
 
-                Container(
-                  height: MediaQuery.of(context).size.height / 2,
-                  child: DonationVenueListWidget(),
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    height: MediaQuery.of(context).size.height / 2,
+                    child: DonationVenueListWidget(),
+                  ),
                 )
               ],
             ),

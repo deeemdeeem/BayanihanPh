@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:helpinghand/screens/center/CreateVenue.dart';
 import 'package:helpinghand/services/auth.dart';
@@ -21,6 +20,7 @@ class Dashboard extends StatelessWidget {
     return StreamProvider<User>.value(
       value: AuthService().user,
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         color: Colors.white,
         initialRoute: '/home',
         routes: {
