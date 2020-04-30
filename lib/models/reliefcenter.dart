@@ -23,7 +23,7 @@ class ReliefCenterModel {
   final String availabilityStartTime;
   final String availabilityEndTime;
   // accepted goods
-  final List<String> acceptedGoods;
+  final Map<String, dynamic> acceptedGoods;
 
   ReliefCenterModel({
     this.id,
@@ -51,8 +51,6 @@ class ReliefCenterModel {
     var availabilityFromJson = json['availability'];
     List<String> availabilityList = new List<String>.from(availabilityFromJson);
     var acceptedGoodsFromJson = json['acceptedGoods'];
-    List<String> acceptedGoodsList =
-        new List<String>.from(acceptedGoodsFromJson);
 
     return ReliefCenterModel(
       id: json['id'],
@@ -73,7 +71,7 @@ class ReliefCenterModel {
       availability: availabilityList,
       availabilityStartTime: json['availabilityTime']['startTime'] ?? 'N/A',
       availabilityEndTime: json['availabilityTime']['endTime'] ?? 'N/A',
-      acceptedGoods: acceptedGoodsList,
+      acceptedGoods: acceptedGoodsFromJson,
     );
   }
 }

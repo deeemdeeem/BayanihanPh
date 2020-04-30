@@ -650,7 +650,6 @@ class _CreateVenueState extends State<CreateVenue> {
       bool validateDeliveryTarget = _deliverTargetNameController.text.isEmpty;
       bool validateHostLocation = provider.hostMarker == null;
       bool validateTargetLocation = provider.targetMarker == null;
-
       if (validateCalamityName ||
           validateVenueName ||
           validateContactPerson ||
@@ -697,9 +696,11 @@ class _CreateVenueState extends State<CreateVenue> {
         setState(() {
           isSending = true;
         });
+        Map<String, dynamic> acceptedGoodsArr = {};
+        acceptedGoods.forEach((good) => acceptedGoodsArr[good] = 0);
         Map<String, dynamic> responseBody = {
           'uid': '${user.uid}',
-          'acceptedGoods': acceptedGoods,
+          'acceptedGoods': acceptedGoodsArr,
           'availability': selected,
           'availabilityTime': {
             'endTime': '${endDayTime.hour}:${endDayTime.minute}',

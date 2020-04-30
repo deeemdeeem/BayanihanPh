@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:helpinghand/models/reliefcenter.dart';
 import 'package:helpinghand/models/user.dart';
+import 'package:helpinghand/screens/center/VenuePage.dart';
 import 'package:provider/provider.dart';
 import '../providers/Venues.dart';
 import 'package:http/http.dart' as http;
@@ -16,8 +17,6 @@ class DonationVenueListWidget extends StatefulWidget {
 }
 
 class _DonationVenueListWidgetState extends State<DonationVenueListWidget> {
-  List<ReliefCenterModel> reliefCenters = [];
-  bool loading = false;
   @override
   Widget build(BuildContext context) {
     final venueData = Provider.of<VenuesProvider>(context);
@@ -25,40 +24,88 @@ class _DonationVenueListWidgetState extends State<DonationVenueListWidget> {
     final prov = Provider.of<User>(context);
 
     Future<List<ReliefCenterModel>> fetchUserCenters() async {
-      setState(() {
-        loading = true;
-      });
       http.Client client = new http.Client();
       http.Response response = await client.get(
           'https://solutionchallenge-52ee8.firebaseio.com/reliefcenter.json');
-      print(response.body);
       var body = jsonDecode(response.body);
       List<ReliefCenterModel> userCenters = [];
-      body.forEach((k, v) {
-        print(k);
-        if (v['uid'] == prov.uid) {
-          userCenters.add(ReliefCenterModel.fromJson(body['$k']));
-        }
-      });
-      setState(() {
-        loading = false;
-        reliefCenters = [...userCenters];
-      });
-      return reliefCenters;
+      body.forEach(
+        (k, v) {
+          if (v['uid'] == prov.uid) {
+            userCenters.add(ReliefCenterModel.fromJson(body['$k']));
+          }
+        },
+      );
+      return userCenters;
     }
 
     return Container(
-      child: ListView.builder(
-        itemCount: list.length,
-        itemBuilder: (context, index) => VenueListItemWidget(
-          name: list[index].name,
-          mobile: list[index].mobile,
-          coordinates: list[index].coordinates,
-          location: list[index].location,
-          supervisor: list[index].supervisor,
-          telnumber: list[index].telnumber,
-        ),
-      ),
+      child: FutureBuilder<List<ReliefCenterModel>>(
+          future: fetchUserCenters(),
+          builder: (BuildContext context,
+              AsyncSnapshot<List<ReliefCenterModel>> snapshot) {
+            print(snapshot.connectionState);
+            print(snapshot.hasData);
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return Container(
+                  height: 100,
+                  width: double.infinity,
+                  child: Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        CircularProgressIndicator(),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text('Loading')
+                      ],
+                    ),
+                  ),
+                );
+
+                break;
+              case ConnectionState.done:
+                print(snapshot.data);
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (context, i) {
+                      return Card(
+                        child: ListTile(
+                          onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => VenuePage(
+                                  model: snapshot.data[i],
+                                ),
+                              )),
+                          title: Text(snapshot.data[i].reliefCenterName),
+                          subtitle: Text(snapshot.data[i].calamityName),
+                          trailing: Icon(Icons.arrow_forward_ios),
+                        ),
+                      );
+                    },
+                  );
+                } else {
+                  return Text('No Data');
+                }
+                break;
+              default:
+                return Center(
+                  child: Column(
+                    children: <Widget>[
+                      CircularProgressIndicator(),
+                      Text('Loading')
+                    ],
+                  ),
+                );
+                break;
+            }
+            ;
+          }),
     );
   }
 }

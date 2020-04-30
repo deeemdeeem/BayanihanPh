@@ -118,9 +118,6 @@ class _HomeIndexState extends State<HomeIndex> {
                         fontSize: 15,
                       ),
                     ),
-                    onTap: () async {
-                      await _auth.googleSignOut();
-                    },
                   ),
                 ),
               ],
@@ -151,9 +148,8 @@ class _HomeIndexState extends State<HomeIndex> {
                 // ),
 
                 Expanded(
-                  flex: 2,
+                  flex: 3,
                   child: Container(
-                    height: MediaQuery.of(context).size.height / 2,
                     child: DonationVenueListWidget(),
                   ),
                 )

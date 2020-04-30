@@ -13,43 +13,17 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   List<ReliefCenterModel> reliefCenters = [];
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
     final prov = Provider.of<User>(context);
-    void fetchUserCenters() async {
-      http.Client client = new http.Client();
-      http.Response response = await client.get(
-          'https://solutionchallenge-52ee8.firebaseio.com/reliefcenter.json');
-      print(response.body);
-      var body = jsonDecode(response.body);
-      List<ReliefCenterModel> userCenters = [];
-      body.forEach((k, v) {
-        print(k);
-        if (v['uid'] == prov.uid) {
-          userCenters.add(ReliefCenterModel.fromJson(body['$k']));
-        }
-      });
-      setState(() {
-        reliefCenters = [...userCenters];
-      });
-    }
 
     return Container(
       child: Container(
         decoration: BoxDecoration(
           color: Colors.grey[100],
-        ),
-        child: Center(
-          child: FlatButton(
-            onPressed: fetchUserCenters,
-            color: Colors.blue,
-            child: Text(
-              'Fetch Data',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+          image: DecorationImage(
+            image: AssetImage('assets/bayanihan.png'),
           ),
         ),
       ),
