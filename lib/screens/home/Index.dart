@@ -56,13 +56,42 @@ class _HomeIndexState extends State<HomeIndex> {
               children: <Widget>[
                 DrawerHeader(
                   decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(user.displayImage),
-                      fit: BoxFit.cover,
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Colors.blue,
+                        Colors.blueAccent,
+                      ],
                     ),
-                    color: Colors.blue,
                   ),
-                  child: null,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(
+                          user.displayImage,
+                        ),
+                        radius: 40,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        width: double.infinity,
+                        child: Center(
+                          child: Text(
+                            user.displayName,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontFamily: mSemiBold,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 ListTile(
                   dense: false,
