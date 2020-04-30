@@ -117,6 +117,9 @@ class _HomeIndexState extends State<HomeIndex> {
                         fontSize: 15,
                       ),
                     ),
+                    onTap: () async {
+                      await _auth.googleSignOut();
+                    },
                   ),
                 ),
               ],
