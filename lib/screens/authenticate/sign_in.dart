@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:helpinghand/services/auth.dart';
 import 'package:video_player/video_player.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleView;
@@ -48,7 +49,7 @@ class _BackgroundVideoState extends State<SignIn> {
                 child: FittedBox(
                   // If your background video doesn't look right, try changing the BoxFit property.
                   // BoxFit.fill created the look I was going for.
-                  fit: BoxFit.fitHeight,
+                  fit: BoxFit.cover,
                   child: SizedBox(
                     width: _controller.value.size?.width ?? 0,
                     height: _controller.value.size?.height ?? 0,
@@ -85,20 +86,11 @@ class LoginWidget extends StatelessWidget {
           flex: 3,
           child: Container(
             margin: EdgeInsets.all(10),
-            decoration: new BoxDecoration(
-              color: Colors.white.withAlpha(100),
-              borderRadius: new BorderRadius.only(
-                topLeft: const Radius.circular(10.0),
-                topRight: const Radius.circular(10.0),
-                bottomLeft: const Radius.circular(10.0),
-                bottomRight: const Radius.circular(10.0),
-              ),
-            ),
             padding: EdgeInsets.all(5),
             child: Center(
               child: Image(
                 image: AssetImage("assets/bayanihan.png"),
-                width: 270.0,
+                width: 300.0,
               ),
             ),
           ),
@@ -110,7 +102,7 @@ class LoginWidget extends StatelessWidget {
           ),
         ),
         Expanded(
-          flex:4,
+          flex: 4,
           child: Container(
             padding: EdgeInsets.all(16),
             width: 300,
@@ -119,18 +111,28 @@ class LoginWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 ButtonTheme(
-                  minWidth: 300.0,
-                  child: RaisedButton(
-                    color: Colors.blueAccent[500],
-                    child: Text(
-                      'Login with Gmail',
-                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    minWidth: 300.0,
+                    child: SignInButton(
+                      Buttons.Google,
+                      text: "Sign in with Google",
+                      onPressed: () async {
+                        _auth.googleSignIn();
+                      },
+                    )
+                   
+
+                    // FlatButton.icon(
+                    //   color: Colors.blueAccent[500],
+                    //   icon: Icon(Icons.add_a_photo),
+                    //   label: Text(
+                    //     'Login with Gmail',
+                    //     style: TextStyle(color: Colors.white, fontSize: 20),
+                    //   ),
+                    //   onPressed: () async {
+                    //     _auth.googleSignIn();
+                    //   },
+                    // ),
                     ),
-                    onPressed: () async {
-                      _auth.googleSignIn();
-                    },
-                  ),
-                ),
               ],
             ),
           ),
