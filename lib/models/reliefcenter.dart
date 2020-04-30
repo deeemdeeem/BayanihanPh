@@ -23,7 +23,7 @@ class ReliefCenterModel {
   final String availabilityStartTime;
   final String availabilityEndTime;
   // accepted goods
-  final Map<String, dynamic> acceptedGoods;
+  final List<dynamic> acceptedGoods;
 
   ReliefCenterModel({
     this.id,
@@ -48,29 +48,30 @@ class ReliefCenterModel {
   });
 
   factory ReliefCenterModel.fromJson(Map<String, dynamic> json) {
-    var availabilityFromJson = json['availability'];
+    var availabilityFromJson = json['body']['availability'];
     List<String> availabilityList = new List<String>.from(availabilityFromJson);
-    var acceptedGoodsFromJson = json['acceptedGoods'];
+    var acceptedGoodsFromJson = json['body']['acceptedGoods'];
 
     return ReliefCenterModel(
       id: json['id'],
-      uid: json['uid'],
-      reliefCenterName: json['reliefCenterName'],
-      calamityName: json['calamityName'],
-      isDelivered: json['isDelivered'],
-      hostLname: json['hostLname'],
-      hostFname: json['hostFname'],
-      hostContact: json['hostContact'],
-      deliveryTarget: json['deliveryTarget'],
-      deliveryLocationLat: json['deliveryLocation']['lat'],
-      deliveryLocationLong: json['deliveryLocation']['long'],
-      hostLocationLat: json['hostLocation']['lat'],
-      hostLocationLong: json['hostLocation']['long'],
-      startDate: json['dateRange']['startDate'] ?? 'N/A',
-      endDate: json['dateRange']['endDate'] ?? 'N/A',
+      uid: json['body']['uid'],
+      reliefCenterName: json['body']['reliefCenterName'],
+      calamityName: json['body']['calamityName'],
+      isDelivered: json['body']['isDelivered'],
+      hostLname: json['body']['hostLname'],
+      hostFname: json['body']['hostFname'],
+      hostContact: json['body']['hostContact'],
+      deliveryTarget: json['body']['deliveryTarget'],
+      deliveryLocationLat: json['body']['deliveryLocation']['lat'],
+      deliveryLocationLong: json['body']['deliveryLocation']['long'],
+      hostLocationLat: json['body']['hostLocation']['lat'],
+      hostLocationLong: json['body']['hostLocation']['long'],
+      startDate: json['body']['dateRange']['startDate'] ?? 'N/A',
+      endDate: json['body']['dateRange']['endDate'] ?? 'N/A',
       availability: availabilityList,
-      availabilityStartTime: json['availabilityTime']['startTime'] ?? 'N/A',
-      availabilityEndTime: json['availabilityTime']['endTime'] ?? 'N/A',
+      availabilityStartTime:
+          json['body']['availabilityTime']['startTime'] ?? 'N/A',
+      availabilityEndTime: json['body']['availabilityTime']['endTime'] ?? 'N/A',
       acceptedGoods: acceptedGoodsFromJson,
     );
   }

@@ -31,8 +31,12 @@ class _DonationVenueListWidgetState extends State<DonationVenueListWidget> {
       List<ReliefCenterModel> userCenters = [];
       body.forEach(
         (k, v) {
+          Map<String, dynamic> withId = {
+            'id': k,
+            'body': body['$k'],
+          };
           if (v['uid'] == prov.uid) {
-            userCenters.add(ReliefCenterModel.fromJson(body['$k']));
+            userCenters.add(ReliefCenterModel.fromJson(withId));
           }
         },
       );
