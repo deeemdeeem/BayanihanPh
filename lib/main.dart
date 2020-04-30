@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:helpinghand/providers/Location.dart';
 import 'package:helpinghand/screens/wrapper.dart';
 import 'package:helpinghand/services/auth.dart';
 import 'package:provider/provider.dart';
@@ -9,10 +10,17 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<User>.value(
-      value: AuthService().user,
-      child: MaterialApp(
-        home: Wrapper(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => Location(),
+        )
+      ],
+      child: StreamProvider<User>.value(
+        value: AuthService().user,
+        child: MaterialApp(
+          home: Wrapper(),
+        ),
       ),
     );
   }
