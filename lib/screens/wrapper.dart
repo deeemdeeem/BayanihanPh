@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:helpinghand/screens/authenticate/authenticate.dart';
-import 'package:helpinghand/screens/home/home.dart';
 import 'package:helpinghand/dashboard.dart';
 import 'package:provider/provider.dart';
 import 'package:helpinghand/models/user.dart';
