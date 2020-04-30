@@ -33,6 +33,7 @@ class _VenuePageState extends State<VenuePage> {
             title: Text(
                 data.keys.toString().replaceAll('(', '').replaceAll(')', '')),
             content: TextField(
+              keyboardType: TextInputType.number,
               onChanged: (str) {
                 setState(() {
                   object[i][data.keys.first] = str;
