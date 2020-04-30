@@ -105,6 +105,7 @@ class _HomeIndexState extends State<HomeIndex> {
                     borderRadius: BorderRadius.zero,
                   ),
                   child: ListTile(
+                    onTap: () => _auth.googleSignOut(),
                     leading: Icon(
                       FontAwesomeIcons.signOutAlt,
                       color: Colors.white,
