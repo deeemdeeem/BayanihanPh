@@ -1,23 +1,63 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:helpinghand/models/reliefcenter.dart';
+import 'package:helpinghand/models/user.dart';
 import 'package:provider/provider.dart';
 import '../providers/Venues.dart';
+import 'package:http/http.dart' as http;
 
-class DonationVenueListWidget extends StatelessWidget {
+class DonationVenueListWidget extends StatefulWidget {
   // DonationVenueListWidget({@required this.list});
 
+  @override
+  _DonationVenueListWidgetState createState() =>
+      _DonationVenueListWidgetState();
+}
+
+class _DonationVenueListWidgetState extends State<DonationVenueListWidget> {
+  List<ReliefCenterModel> reliefCenters = [];
+  bool loading = false;
   @override
   Widget build(BuildContext context) {
     final venueData = Provider.of<VenuesProvider>(context);
     final list = venueData.getVenues;
-    return ListView.builder(
-      itemCount: list.length,
-      itemBuilder: (context, index) => VenueListItemWidget(
-        name: list[index].name,
-        mobile: list[index].mobile,
-        coordinates: list[index].coordinates,
-        location: list[index].location,
-        supervisor: list[index].supervisor,
-        telnumber: list[index].telnumber,
+    final prov = Provider.of<User>(context);
+
+    Future<List<ReliefCenterModel>> fetchUserCenters() async {
+      setState(() {
+        loading = true;
+      });
+      http.Client client = new http.Client();
+      http.Response response = await client.get(
+          'https://solutionchallenge-52ee8.firebaseio.com/reliefcenter.json');
+      print(response.body);
+      var body = jsonDecode(response.body);
+      List<ReliefCenterModel> userCenters = [];
+      body.forEach((k, v) {
+        print(k);
+        if (v['uid'] == prov.uid) {
+          userCenters.add(ReliefCenterModel.fromJson(body['$k']));
+        }
+      });
+      setState(() {
+        loading = false;
+        reliefCenters = [...userCenters];
+      });
+      return reliefCenters;
+    }
+
+    return Container(
+      child: ListView.builder(
+        itemCount: list.length,
+        itemBuilder: (context, index) => VenueListItemWidget(
+          name: list[index].name,
+          mobile: list[index].mobile,
+          coordinates: list[index].coordinates,
+          location: list[index].location,
+          supervisor: list[index].supervisor,
+          telnumber: list[index].telnumber,
+        ),
       ),
     );
   }
