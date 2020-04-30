@@ -53,6 +53,11 @@ class _CreateVenueState extends State<CreateVenue> {
   ];
 
   // keys for validation
+  final _calamityKey = GlobalKey<FormState>();
+  final _venueKey = GlobalKey<FormState>();
+  final _contactNameKey = GlobalKey<FormState>();
+  final _contactNumberKey = GlobalKey<FormState>();
+  final _deliveryTargetKey = GlobalKey<FormState>();
 
   TextEditingController _contactPersonController = TextEditingController();
   TextEditingController _centerNameController = TextEditingController();
@@ -68,6 +73,7 @@ class _CreateVenueState extends State<CreateVenue> {
     startDate = DateTime.now();
     startDayTime = TimeOfDay(hour: 9, minute: 0);
     initialDayTime = TimeOfDay.now();
+    endDayTime = TimeOfDay(hour: 17, minute: 0);
     initialTime = DateTime.utc(now.year, now.month, now.day, 9);
   }
 
@@ -89,7 +95,11 @@ class _CreateVenueState extends State<CreateVenue> {
                   width: 10,
                 ),
                 GestureDetector(
-                  onTap: () => Navigator.pop(context),
+                  onTap: () {
+                    if (_calamityKey.currentState.validate()) {
+                      Navigator.pop(context);
+                    }
+                  },
                   child: Text(
                     'Submit',
                     style: TextStyle(
@@ -107,31 +117,41 @@ class _CreateVenueState extends State<CreateVenue> {
                 'Enter Calamity Name',
                 style: TextStyle(fontFamily: mBold, fontSize: 15),
               ),
-              content: TextField(
-                controller: _calamityNameController,
-                style: TextStyle(
-                  fontSize: 13,
-                  fontFamily: mRegular,
-                ),
-                onChanged: (str) => (setState(
-                    () => _calamityName = _calamityNameController.text)),
-                decoration: InputDecoration(
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      Icons.backspace,
+              content: Form(
+                key: _calamityKey,
+                child: TextFormField(
+                  validator: (str) {
+                    if (str.isEmpty) {
+                      return 'Cannot leave the fields blank.';
+                    }
+
+                    return null;
+                  },
+                  controller: _calamityNameController,
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontFamily: mRegular,
+                  ),
+                  onChanged: (str) => (setState(
+                      () => _calamityName = _calamityNameController.text)),
+                  decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        Icons.backspace,
+                        size: 15,
+                      ),
+                      onPressed: () =>
+                          (setState(() => _calamityNameController.clear())),
+                    ),
+                    prefixIcon: Icon(
+                      Icons.warning,
                       size: 15,
                     ),
-                    onPressed: () =>
-                        (setState(() => _calamityNameController.clear())),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+                    hintText: 'Calamity Name',
+                    hintStyle: TextStyle(fontSize: 13),
                   ),
-                  prefixIcon: Icon(
-                    Icons.warning,
-                    size: 15,
-                  ),
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 15, horizontal: 5),
-                  hintText: 'Calamity Name',
-                  hintStyle: TextStyle(fontSize: 13),
                 ),
               ),
             ));
@@ -155,7 +175,11 @@ class _CreateVenueState extends State<CreateVenue> {
             width: 10,
           ),
           GestureDetector(
-            onTap: () => Navigator.pop(context),
+            onTap: () {
+              if (_venueKey.currentState.validate()) {
+                Navigator.pop(context);
+              }
+            },
             child: Text(
               'Submit',
               style: TextStyle(
@@ -170,28 +194,39 @@ class _CreateVenueState extends State<CreateVenue> {
           'Enter Venue Name',
           style: TextStyle(fontFamily: mBold, fontSize: 15),
         ),
-        content: TextField(
-          controller: _centerNameController,
-          style: TextStyle(
-            fontSize: 13,
-            fontFamily: mRegular,
-          ),
-          onChanged: (str) =>
-              (setState(() => _centerName = _centerNameController.text)),
-          decoration: InputDecoration(
-            suffixIcon: IconButton(
-              icon: Icon(
-                Icons.backspace,
-                size: 15.0,
+        content: Form(
+          key: _venueKey,
+          child: TextFormField(
+            controller: _centerNameController,
+            style: TextStyle(
+              fontSize: 13,
+              fontFamily: mRegular,
+            ),
+            validator: (str) {
+              if (str.isEmpty) {
+                return "Cannot leave the fields blank";
+              }
+
+              return null;
+            },
+            onChanged: (str) =>
+                (setState(() => _centerName = _centerNameController.text)),
+            decoration: InputDecoration(
+              suffixIcon: IconButton(
+                icon: Icon(
+                  Icons.backspace,
+                  size: 15.0,
+                ),
+                onPressed: () =>
+                    (setState(() => _centerNameController.clear())),
               ),
-              onPressed: () => (setState(() => _centerNameController.clear())),
+              prefixIcon: Icon(
+                Icons.map,
+              ),
+              contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+              hintText: 'Venue Name',
+              hintStyle: TextStyle(fontSize: 13),
             ),
-            prefixIcon: Icon(
-              Icons.map,
-            ),
-            contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 5),
-            hintText: 'Venue Name',
-            hintStyle: TextStyle(fontSize: 13),
           ),
         ),
       ),
@@ -216,7 +251,12 @@ class _CreateVenueState extends State<CreateVenue> {
             width: 10,
           ),
           GestureDetector(
-            onTap: () => Navigator.pop(context),
+            onTap: () {
+              if (_contactNameKey.currentState.validate() &&
+                  _contactNumberKey.currentState.validate()) {
+                Navigator.pop(context);
+              }
+            },
             child: Text(
               'Submit',
               style: TextStyle(
@@ -234,59 +274,78 @@ class _CreateVenueState extends State<CreateVenue> {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            TextField(
-              controller: _contactPersonController,
-              style: TextStyle(
-                fontSize: 13,
-                fontFamily: mRegular,
-              ),
-              onChanged: (str) => (setState(
-                  () => _contactPersonName = _contactPersonController.text)),
-              decoration: InputDecoration(
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    Icons.backspace,
-                    size: 15,
+            Form(
+              key: _contactNameKey,
+              child: TextFormField(
+                validator: (str) {
+                  if (str.isEmpty) {
+                    return "Cannot leave the fields blank.";
+                  }
+                  return null;
+                },
+                controller: _contactPersonController,
+                style: TextStyle(
+                  fontSize: 13,
+                  fontFamily: mRegular,
+                ),
+                onChanged: (str) => (setState(
+                    () => _contactPersonName = _contactPersonController.text)),
+                decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      Icons.backspace,
+                      size: 15,
+                    ),
+                    onPressed: () =>
+                        (setState(() => _contactPersonController.clear())),
                   ),
-                  onPressed: () =>
-                      (setState(() => _contactPersonController.clear())),
+                  prefixIcon: Icon(
+                    Icons.person,
+                  ),
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+                  hintText: 'Contact Person',
+                  hintStyle: TextStyle(fontSize: 13),
                 ),
-                prefixIcon: Icon(
-                  Icons.person,
-                ),
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 15, horizontal: 5),
-                hintText: 'Contact Person',
-                hintStyle: TextStyle(fontSize: 13),
               ),
             ),
             SizedBox(
               height: 10,
             ),
-            TextField(
-              controller: _contactNumberController,
-              style: TextStyle(
-                fontSize: 13,
-                fontFamily: mRegular,
-              ),
-              onChanged: (str) => (setState(
-                  () => _contactNumber = _contactNumberController.text)),
-              decoration: InputDecoration(
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    Icons.backspace,
-                    size: 15,
+            Form(
+              key: _contactNumberKey,
+              child: TextFormField(
+                keyboardType: TextInputType.number,
+                controller: _contactNumberController,
+                style: TextStyle(
+                  fontSize: 13,
+                  fontFamily: mRegular,
+                ),
+                validator: (str) {
+                  if (str.isEmpty) {
+                    return "Cannot leave the fields blank.";
+                  }
+                  return null;
+                },
+                onChanged: (str) => (setState(
+                    () => _contactNumber = _contactNumberController.text)),
+                decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      Icons.backspace,
+                      size: 15,
+                    ),
+                    onPressed: () =>
+                        (setState(() => _contactNumberController.clear())),
                   ),
-                  onPressed: () =>
-                      (setState(() => _contactNumberController.clear())),
+                  prefixIcon: Icon(
+                    Icons.phone,
+                  ),
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+                  hintText: 'Contact Number',
+                  hintStyle: TextStyle(fontSize: 13),
                 ),
-                prefixIcon: Icon(
-                  Icons.phone,
-                ),
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 15, horizontal: 5),
-                hintText: 'Contact Number',
-                hintStyle: TextStyle(fontSize: 13),
               ),
             ),
           ],
@@ -377,7 +436,7 @@ class _CreateVenueState extends State<CreateVenue> {
         });
 
     setState(() {
-      startDayTime = timeofday;
+      startDayTime = timeofday ?? TimeOfDay.now();
       didStartTimeChange = true;
     });
   }
@@ -385,13 +444,13 @@ class _CreateVenueState extends State<CreateVenue> {
   _setEndTime() async {
     TimeOfDay timeofday = await showTimePicker(
         context: context,
-        initialTime: initialDayTime,
+        initialTime: startDayTime,
         builder: (context, widget) {
           return widget;
         });
 
     setState(() {
-      endDayTime = timeofday;
+      endDayTime = timeofday ?? TimeOfDay(hour: 9, minute: 00);
       didEndTimeChange = true;
     });
     print(timeofday);
@@ -520,7 +579,11 @@ class _CreateVenueState extends State<CreateVenue> {
                 width: 10,
               ),
               GestureDetector(
-                onTap: () => Navigator.pop(context),
+                onTap: () {
+                  if (_deliveryTargetKey.currentState.validate()) {
+                    Navigator.pop(context);
+                  }
+                },
                 child: Text(
                   'Submit',
                   style: TextStyle(
@@ -532,34 +595,37 @@ class _CreateVenueState extends State<CreateVenue> {
               ),
             ],
             title: Text('Delivery Target'),
-            content: TextFormField(
-              validator: (str) {
-                if (str.isEmpty) {
-                  return "Cannot leave the fields blank";
-                }
-                return null;
-              },
-              controller: _deliverTargetNameController,
-              style: TextStyle(
-                fontSize: 13,
-              ),
-              onChanged: (str) => (setState(() =>
-                  _deliverTargetName = _deliverTargetNameController.text)),
-              decoration: InputDecoration(
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    Icons.backspace,
+            content: Form(
+              key: _deliveryTargetKey,
+              child: TextFormField(
+                validator: (str) {
+                  if (str.isEmpty) {
+                    return "Cannot leave the fields blank";
+                  }
+                  return null;
+                },
+                controller: _deliverTargetNameController,
+                style: TextStyle(
+                  fontSize: 13,
+                ),
+                onChanged: (str) => (setState(() =>
+                    _deliverTargetName = _deliverTargetNameController.text)),
+                decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      Icons.backspace,
+                    ),
+                    onPressed: () =>
+                        (setState(() => _deliverTargetNameController.clear())),
                   ),
-                  onPressed: () =>
-                      (setState(() => _deliverTargetNameController.clear())),
+                  prefixIcon: Icon(
+                    Icons.person,
+                  ),
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+                  hintText: 'Delivery Target',
+                  hintStyle: TextStyle(fontSize: 13),
                 ),
-                prefixIcon: Icon(
-                  Icons.person,
-                ),
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 15, horizontal: 5),
-                hintText: 'Delivery Target',
-                hintStyle: TextStyle(fontSize: 13),
               ),
             ),
           );
@@ -574,6 +640,41 @@ class _CreateVenueState extends State<CreateVenue> {
       setState(() {
         isSending = true;
       });
+      bool validateCalamityName = _calamityNameController.text.isEmpty;
+      bool validateVenueName = _centerNameController.text.isEmpty;
+      bool validateContactPerson = _contactPersonController.text.trim().isEmpty;
+      bool validateContactNumer = _contactNumberController.text.trim().isEmpty;
+      bool validateAvailability = selected.length == 0;
+      bool validateStartDate = startDate == null;
+      bool validateEndDate = endDate == null;
+      bool validateStartTime = startDayTime == null;
+      bool validateEndTime = endDayTime == null;
+      bool validateAcceptedGoods = acceptedGoods.length == 0;
+      bool validateDeliveryTarget = _deliverTargetNameController.text.isEmpty;
+      bool validateHostLocation = provider.hostMarker == null;
+      bool validateTargetLocation = provider.targetMarker == null;
+
+      if (validateCalamityName ||
+          validateVenueName ||
+          validateContactPerson ||
+          validateContactNumer ||
+          validateAvailability ||
+          validateStartDate ||
+          validateEndDate ||
+          validateStartTime ||
+          validateEndTime ||
+          validateAcceptedGoods ||
+          validateDeliveryTarget ||
+          validateHostLocation ||
+          validateTargetLocation) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: Text('Oops! You missed something!'),
+              );
+            });
+      }
       Map<String, dynamic> responseBody = {
         'uid': '${user.uid}',
         'acceptedGoods': acceptedGoods,
@@ -839,7 +940,7 @@ class _CreateVenueState extends State<CreateVenue> {
                           ),
                           Text(
                             didStartTimeChange
-                                ? "${startDayTime.hour} : ${startDayTime.minute}"
+                                ? "${startDayTime.format(context)}"
                                 : 'Start Time',
                             style: TextStyle(
                               fontFamily: mMedium,
@@ -856,7 +957,7 @@ class _CreateVenueState extends State<CreateVenue> {
                           ),
                           Text(
                             didEndTimeChange
-                                ? "${endDayTime.hour} : ${endDayTime.minute}"
+                                ? "${endDayTime.format(context)}"
                                 : 'End Time',
                             style: TextStyle(
                               fontFamily: mMedium,
@@ -874,7 +975,10 @@ class _CreateVenueState extends State<CreateVenue> {
                         color: Colors.indigo,
                       ),
                       onTap: _setAcceptedGoods,
-                      leading: Icon(FontAwesomeIcons.birthdayCake),
+                      leading: Icon(
+                        FontAwesomeIcons.birthdayCake,
+                        color: Colors.lightBlue,
+                      ),
                       title: Text(
                         'Accepted Goods',
                         style: TextStyle(
@@ -925,13 +1029,18 @@ class _CreateVenueState extends State<CreateVenue> {
                         size: 30,
                       ),
                       title: Text(
-                          '${_deliverTargetNameController.text.trim().length == 0 ? 'Delivery Target' : _deliverTargetNameController.text}'),
+                        '${_deliverTargetNameController.text.trim().length == 0 ? 'Delivery Target' : _deliverTargetNameController.text}',
+                        style: TextStyle(
+                          fontFamily: mMedium,
+                          fontSize: 13,
+                        ),
+                      ),
                       subtitle: Text(
                         'Set Target',
                         style: TextStyle(
                           color: Colors.indigo,
                           fontFamily: mMedium,
-                          fontSize: 13,
+                          fontSize: 12,
                         ),
                       ),
                     ),
@@ -950,13 +1059,19 @@ class _CreateVenueState extends State<CreateVenue> {
                         FontAwesomeIcons.mapMarkerAlt,
                         color: Colors.green,
                       ),
-                      title: Text('Deliver Target Location'),
+                      title: Text(
+                        'Deliver Target Location',
+                        style: TextStyle(
+                          fontFamily: mMedium,
+                          fontSize: 13,
+                        ),
+                      ),
                       subtitle: Text(
                         'Set Location',
                         style: TextStyle(
                           color: Colors.indigo,
                           fontFamily: mMedium,
-                          fontSize: 13,
+                          fontSize: 12,
                         ),
                       ),
                     ),
