@@ -1,16 +1,28 @@
-# helpinghand
+# Bayanihan Ph
 
-A new Flutter project.
+This app is for Volunteers who want to setup their own relief center
+That will be displayed in the Bayanihan Ph Donors app. 
 
-## Getting Started
+No registration is needed. Users may only login using GMAIL account.
 
-This project is a starting point for a Flutter application.
+How to use Bayanihan Ph - Volunteer
 
-A few resources to get you started if this is your first Flutter project:
+Video Presentation Link: 
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+To replicate the project using VS Code
+
+1. clone the project
+https://github.com/deeemdeeem/BayanihanPh.git
+
+2. Open terminal and run to download all dependencies : flutter pub get
+
+3. Open Android Emulator and run in the terminal of Bayanihan Ph the following: flutter run
+
+4. Sign-in using Gmail Accoumt
+
+5. Set up a relief center by tapping the create venue button at the dahboard
+
+6. Add/Edit Inventory count by tapping the relief center card at the dashboard.
+
+7. Logout
