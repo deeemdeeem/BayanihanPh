@@ -7,6 +7,7 @@ import 'package:helpinghand/widgets/DashboardWidget.dart';
 import 'package:helpinghand/widgets/DonationVenueList.dart';
 import 'package:provider/provider.dart';
 import 'package:helpinghand/services/auth.dart';
+import 'package:helpinghand/models/user.dart';
 
 class HomeIndex extends StatefulWidget {
   @override
@@ -17,6 +18,7 @@ class _HomeIndexState extends State<HomeIndex> {
   final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<User>(context);
     return ChangeNotifierProvider(
       create: (context) => VenuesProvider(),
       child: Scaffold(
@@ -55,8 +57,7 @@ class _HomeIndexState extends State<HomeIndex> {
                 DrawerHeader(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(
-                          'https://images.unsplash.com/photo-1542103749-8ef59b94f47e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80'),
+                      image: NetworkImage(user.displayImage),
                       fit: BoxFit.cover,
                     ),
                     color: Colors.blue,
