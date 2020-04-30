@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:helpinghand/constants/constants.dart';
 import 'package:helpinghand/models/reliefcenter.dart';
 import 'package:helpinghand/models/user.dart';
 import 'package:helpinghand/screens/center/VenuePage.dart';
@@ -31,8 +33,12 @@ class _DonationVenueListWidgetState extends State<DonationVenueListWidget> {
       List<ReliefCenterModel> userCenters = [];
       body.forEach(
         (k, v) {
+          Map<String, dynamic> withId = {
+            'id': k,
+            'body': body['$k'],
+          };
           if (v['uid'] == prov.uid) {
-            userCenters.add(ReliefCenterModel.fromJson(body['$k']));
+            userCenters.add(ReliefCenterModel.fromJson(withId));
           }
         },
       );
@@ -90,7 +96,31 @@ class _DonationVenueListWidgetState extends State<DonationVenueListWidget> {
                     },
                   );
                 } else {
-                  return Text('No Data');
+                  return Container(
+                    height: 100,
+                    width: double.infinity,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          Icons.warning,
+                          size: 50,
+                          color: Colors.redAccent,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          'You have no venues yet. \nTap on Create Venue to add a venue.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: mMedium,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
                 }
                 break;
               default:

@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:helpinghand/constants/constants.dart';
 import 'package:helpinghand/models/reliefcenter.dart';
+import 'package:http/http.dart' as http;
 
 class VenuePage extends StatefulWidget {
   ReliefCenterModel model;
@@ -12,27 +15,50 @@ class VenuePage extends StatefulWidget {
 }
 
 class _VenuePageState extends State<VenuePage> {
-  Map<String, dynamic> dataObj = {};
-  List<Map<String, dynamic>> object = [
-    {
-      "clothing": 0,
-    },
-    {
-      "water": 0,
-    },
-    {
-      "food": 0,
-    },
-  ];
+  List<dynamic> object = [];
+
+  Future updateObject() async {
+    http.Client client = new http.Client();
+    Map<String, dynamic> submit = {"acceptedGoods": object};
+    http.Response response = await client.patch(
+        'https://solutionchallenge-52ee8.firebaseio.com/reliefcenter/${widget.model.id}/.json',
+        body: jsonEncode(submit));
+    client.close();
+    print('updated!');
+  }
 
   updateData(Map<String, dynamic> data, int i) {
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
+            actions: <Widget>[
+              GestureDetector(
+                onTap: () => Navigator.pop(context),
+                child: Text('Dismiss',
+                    style: TextStyle(
+                      fontFamily: mMedium,
+                      color: Colors.grey,
+                    )),
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                  updateObject();
+                },
+                child: Text(
+                  'Submit',
+                  style: TextStyle(
+                    fontFamily: mBold,
+                    color: Colors.indigoAccent,
+                  ),
+                ),
+              ),
+            ],
             title: Text(
                 data.keys.toString().replaceAll('(', '').replaceAll(')', '')),
             content: TextField(
+              keyboardType: TextInputType.number,
               onChanged: (str) {
                 setState(() {
                   object[i][data.keys.first] = str;
@@ -48,17 +74,11 @@ class _VenuePageState extends State<VenuePage> {
   @override
   void initState() {
     super.initState();
-    dataObj = widget.model.acceptedGoods;
-    print(dataObj);
+    object = widget.model.acceptedGoods;
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Map<String, dynamic>> obj = [];
-    widget.model.acceptedGoods.forEach((k, v) {
-      obj.add({'$k': v});
-    });
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.model.reliefCenterName),
@@ -68,13 +88,26 @@ class _VenuePageState extends State<VenuePage> {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.all(10),
-            child: Text(
-              'For ${widget.model.calamityName}',
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontFamily: mBold,
-                fontSize: 30,
-              ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  'For ${widget.model.calamityName}',
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    fontFamily: mBold,
+                    fontSize: 30,
+                  ),
+                ),
+                Text(
+                  '(tap to update)',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 10,
+                    fontFamily: mMedium,
+                  ),
+                )
+              ],
             ),
           ),
           Padding(

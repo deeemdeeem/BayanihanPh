@@ -696,8 +696,8 @@ class _CreateVenueState extends State<CreateVenue> {
         setState(() {
           isSending = true;
         });
-        Map<String, dynamic> acceptedGoodsArr = {};
-        acceptedGoods.forEach((good) => acceptedGoodsArr[good] = 0);
+        List<Map<String, dynamic>> acceptedGoodsArr = [];
+        acceptedGoods.forEach((good) => acceptedGoodsArr.add({'$good': 0}));
         Map<String, dynamic> responseBody = {
           'uid': '${user.uid}',
           'acceptedGoods': acceptedGoodsArr,
