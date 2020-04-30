@@ -637,9 +637,6 @@ class _CreateVenueState extends State<CreateVenue> {
     final provider = Provider.of<Location>(context);
     final user = Provider.of<User>(context);
     void submitInformation() async {
-      setState(() {
-        isSending = true;
-      });
       bool validateCalamityName = _calamityNameController.text.isEmpty;
       bool validateVenueName = _centerNameController.text.isEmpty;
       bool validateContactPerson = _contactPersonController.text.trim().isEmpty;
@@ -671,53 +668,79 @@ class _CreateVenueState extends State<CreateVenue> {
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: Text('Oops! You missed something!'),
+                title: Column(
+                  children: <Widget>[
+                    Icon(
+                      Icons.warning,
+                      color: Colors.amber,
+                      size: 50,
+                    ),
+                    Text(
+                      'Warning!',
+                      style: TextStyle(
+                        fontFamily: mBlack,
+                        fontSize: 30,
+                      ),
+                    )
+                  ],
+                ),
+                content: Text(
+                  'Oops! Don\'t forget to enter the required fields.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontFamily: mMedium,
+                  ),
+                ),
               );
             });
+      } else {
+        setState(() {
+          isSending = true;
+        });
+        Map<String, dynamic> responseBody = {
+          'uid': '${user.uid}',
+          'acceptedGoods': acceptedGoods,
+          'availability': selected,
+          'availabilityTime': {
+            'endTime': '${endDayTime.hour}:${endDayTime.minute}',
+            'startTime': '${startDayTime.hour}:${startDayTime.minute}',
+          },
+          'calamityName': _calamityNameController.text,
+          'dateRange': {
+            'endDate':
+                '${endDate.year}-${endDate.month.toString().padLeft(2, '0')}-${endDate.day}',
+            'startDate':
+                '${startDate.year}-${startDate.month.toString().padLeft(2, '0')}-${startDate.day}',
+          },
+          'deliveryLocation': {
+            'lat': provider.targetMarker.point.latitude.toString(),
+            'long': provider.targetMarker.point.longitude.toString(),
+          },
+          'deliveryTarget': _deliverTargetNameController.text,
+          'hostContact': _contactNumberController.text,
+          'hostFname': _contactPersonController.text,
+          'hostLname': 'Test',
+          'hostLocation': {
+            'lat': provider.hostMarker.point.latitude.toString(),
+            'long': provider.hostMarker.point.longitude.toString(),
+          },
+          'isDelivered': false,
+          'reliefCenterName': _centerNameController.text
+        };
+
+        print(responseBody);
+
+        http.Client client = new http.Client();
+        http.Response response = await client.post(
+            'https://solutionchallenge-52ee8.firebaseio.com/reliefcenter.json',
+            body: jsonEncode(responseBody));
+        Navigator.pop(context);
+        provider.setHostMarker(provider.defaultMarker);
+        provider.setTargetMarker(provider.defaultMarker);
+        setState(() {
+          isSending = false;
+        });
       }
-      Map<String, dynamic> responseBody = {
-        'uid': '${user.uid}',
-        'acceptedGoods': acceptedGoods,
-        'availability': selected,
-        'availabilityTime': {
-          'endTime': '${endDayTime.hour}:${endDayTime.minute}',
-          'startTime': '${startDayTime.hour}:${startDayTime.minute}',
-        },
-        'calamityName': _calamityNameController.text,
-        'dateRange': {
-          'endDate':
-              '${endDate.year}-${endDate.month.toString().padLeft(2, '0')}-${endDate.day}',
-          'startDate':
-              '${startDate.year}-${startDate.month.toString().padLeft(2, '0')}-${startDate.day}',
-        },
-        'deliveryLocation': {
-          'lat': provider.targetMarker.point.latitude.toString(),
-          'long': provider.targetMarker.point.longitude.toString(),
-        },
-        'deliveryTarget': _deliverTargetNameController.text,
-        'hostContact': _contactNumberController.text,
-        'hostFname': _contactPersonController.text,
-        'hostLname': 'Test',
-        'hostLocation': {
-          'lat': provider.hostMarker.point.latitude.toString(),
-          'long': provider.hostMarker.point.longitude.toString(),
-        },
-        'isDelivered': false,
-        'reliefCenterName': _centerNameController.text
-      };
-
-      print(responseBody);
-
-      http.Client client = new http.Client();
-      http.Response response = await client.post(
-          'https://solutionchallenge-52ee8.firebaseio.com/reliefcenter.json',
-          body: jsonEncode(responseBody));
-      Navigator.pop(context);
-      provider.setHostMarker(provider.defaultMarker);
-      provider.setTargetMarker(provider.defaultMarker);
-      setState(() {
-        isSending = false;
-      });
     }
 
     return isSending
