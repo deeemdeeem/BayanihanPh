@@ -15,6 +15,13 @@ class Location extends ChangeNotifier {
       color: Colors.redAccent,
     ),
   );
+  Marker defaultMarker = Marker(
+    point: LatLng(14.590499, 120.980817),
+    builder: (context) => Icon(
+      Icons.location_on,
+      color: Colors.redAccent,
+    ),
+  );
   Marker _targetMarker = Marker(
     point: LatLng(14.590499, 120.980817),
     builder: (context) => Icon(
