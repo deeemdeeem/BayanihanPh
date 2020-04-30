@@ -5,23 +5,18 @@ import 'package:video_player/video_player.dart';
 class SignIn extends StatefulWidget {
   final Function toggleView;
   SignIn({this.toggleView});
-   @override
+  @override
   _BackgroundVideoState createState() => _BackgroundVideoState();
-
 }
 
 final AuthService _auth = AuthService();
 
-
 void main() => runApp(SignIn());
-// Code tutorial for video background used 
-//from https://medium.com/swlh/flutter-how-to-add-a-video-background-90a0e09ce332
-
+// Code tutorial for video background used
+// from https://medium.com/swlh/flutter-how-to-add-a-video-background-90a0e09ce332
 
 class _BackgroundVideoState extends State<SignIn> {
- 
   VideoPlayerController _controller;
-
 
   @override
   void initState() {
@@ -47,10 +42,8 @@ class _BackgroundVideoState extends State<SignIn> {
       ),
       home: SafeArea(
         child: Scaffold(
-         
           body: Stack(
             children: <Widget>[
-         
               SizedBox.expand(
                 child: FittedBox(
                   // If your background video doesn't look right, try changing the BoxFit property.
@@ -78,7 +71,6 @@ class _BackgroundVideoState extends State<SignIn> {
   }
 }
 
-
 class LoginWidget extends StatelessWidget {
   const LoginWidget({
     Key key,
@@ -89,50 +81,58 @@ class LoginWidget extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Container(
-           decoration: new BoxDecoration(
-            color: Colors.white.withAlpha(100),
-            borderRadius: new BorderRadius.only(
-              topLeft: const Radius.circular(10.0),
-              topRight: const Radius.circular(10.0),
-              bottomLeft: const Radius.circular(10.0),
-              bottomRight: const Radius.circular(10.0),
-            ),
-          ),
-          padding: EdgeInsets.all(5),
-          child: Center(
-            child: Image(
-              image: AssetImage("assets/bayanihan.png"),
-              width: 270.0,
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 50.0,
-        ),
-        Container(
-         
-          padding: EdgeInsets.all(16),
-          width: 300,
-          height: 100,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-             
-              ButtonTheme(
-                minWidth: 300.0,
-                child: RaisedButton(
-                  color: Colors.blueAccent[500],
-                  child: Text(
-                    'Login with Gmail',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                  onPressed: () async{
-                    _auth.googleSignIn();
-                  },
-                ),
+        Expanded(
+          flex: 3,
+          child: Container(
+            margin: EdgeInsets.all(10),
+            decoration: new BoxDecoration(
+              color: Colors.white.withAlpha(100),
+              borderRadius: new BorderRadius.only(
+                topLeft: const Radius.circular(10.0),
+                topRight: const Radius.circular(10.0),
+                bottomLeft: const Radius.circular(10.0),
+                bottomRight: const Radius.circular(10.0),
               ),
-            ],
+            ),
+            padding: EdgeInsets.all(5),
+            child: Center(
+              child: Image(
+                image: AssetImage("assets/bayanihan.png"),
+                width: 270.0,
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          flex: 4,
+          child: SizedBox(
+            height: 50.0,
+          ),
+        ),
+        Expanded(
+          flex:4,
+          child: Container(
+            padding: EdgeInsets.all(16),
+            width: 300,
+            height: 100,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                ButtonTheme(
+                  minWidth: 300.0,
+                  child: RaisedButton(
+                    color: Colors.blueAccent[500],
+                    child: Text(
+                      'Login with Gmail',
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                    onPressed: () async {
+                      _auth.googleSignIn();
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ],
@@ -140,11 +140,10 @@ class LoginWidget extends StatelessWidget {
   }
 }
 
-
-
+// old code for reference only
 
 // class _SignInState extends State<SignIn> {
- 
+
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(

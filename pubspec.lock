@@ -504,7 +504,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.8"
-<<<<<<< HEAD
   video_player:
     dependency: "direct main"
     description:
@@ -526,7 +525,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.2+1"
-=======
   wkt_parser:
     dependency: transitive
     description:
@@ -534,7 +532,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.7"
->>>>>>> d3cb9d8affee9a7029022658945cb6a90d2ab5e9
   xml:
     dependency: transitive
     description:
@@ -543,9 +540,5 @@ packages:
     source: hosted
     version: "3.5.0"
 sdks:
-<<<<<<< HEAD
-  dart: ">=2.7.0-dev <3.0.0"
-=======
   dart: ">=2.7.0 <3.0.0"
->>>>>>> d3cb9d8affee9a7029022658945cb6a90d2ab5e9
   flutter: ">=1.12.13+hotfix.5 <2.0.0"
