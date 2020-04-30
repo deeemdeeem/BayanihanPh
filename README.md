@@ -7,7 +7,9 @@ No registration is needed. Users may only login using GMAIL account.
 
 How to use Bayanihan Ph - Volunteer
 
-Video Presentation Link: 
+# NOTE : The video we included in our GSC Submission was outdated and was wrongly inserted due to human error.
+#        Please refer to this video presentation.
+Video Presentation Link: https://youtu.be/0A6LRSXasok
 
 
 To replicate the project using VS Code
@@ -26,3 +28,7 @@ https://github.com/deeemdeeem/BayanihanPh.git
 6. Add/Edit Inventory count by tapping the relief center card at the dashboard.
 
 7. Logout
+
+
+The project for Bayanihan Ph - Donors App is this link
+https://github.com/jose-bamboo/solution-challenge.git
